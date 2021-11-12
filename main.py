@@ -4,17 +4,7 @@ import requests
 from dotenv import load_dotenv
 from urllib.parse import urlparse
 
-
-
-load_dotenv()
-
-API_TOKEN = os.environ["BITLY_API_TOKEN"]
 ENDPOINT = "https://api-ssl.bitly.com/v4"
-
-headers = {
-        "Authorization": f"Bearer {API_TOKEN}",
-        "Content-Type": "application/json"
-    }
 
 
 def shorten_link(url_to_shorten):
@@ -77,5 +67,14 @@ if __name__ == "__main__":
     )
     parser.add_argument('url', help='Введите ссылку')
     args = parser.parse_args()
+
+    load_dotenv()
+
+    API_TOKEN = os.environ["BITLY_API_TOKEN"]
+
+    headers = {
+        "Authorization": f"Bearer {API_TOKEN}",
+        "Content-Type": "application/json"
+    }
 
     print(main(args.url))
