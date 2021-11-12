@@ -76,5 +76,4 @@ def main(url):
 
 
 if __name__ == "__main__":
-    # print(main(input("Введите ссылку: ")))
     print(main(args.url))
