@@ -4,11 +4,7 @@ import requests
 from dotenv import load_dotenv
 from urllib.parse import urlparse
 
-parser = argparse.ArgumentParser(
-    description="Укорачивает ссылку или возвращает количество переходов по короткой ссылке"
-)
-parser.add_argument('url', help='Введите ссылку')
-args = parser.parse_args()
+
 
 load_dotenv()
 
@@ -76,4 +72,10 @@ def main(url):
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description="Укорачивает ссылку или возвращает количество переходов по короткой ссылке"
+    )
+    parser.add_argument('url', help='Введите ссылку')
+    args = parser.parse_args()
+
     print(main(args.url))
