@@ -7,7 +7,7 @@ from urllib.parse import urlparse
 ENDPOINT = "https://api-ssl.bitly.com/v4"
 
 
-def shorten_link(url_to_shorten):
+def shorten_link(url_to_shorten, headers):
     payload = {
         "long_url": url_to_shorten
     }
@@ -20,7 +20,7 @@ def shorten_link(url_to_shorten):
     return f"Битлинк: {response.json()['link']}"
 
 
-def count_clicks(bitlink):
+def count_clicks(bitlink, headers):
     payload = {
         "units": -1,
     }
@@ -41,7 +41,7 @@ def get_clear_url(url):
         return url
 
 
-def is_bitlink(url):
+def is_bitlink(url, headers):
     response = requests.get(
         f"{ENDPOINT}/bitlinks/{url}",
         headers=headers
@@ -49,24 +49,13 @@ def is_bitlink(url):
     return response.ok
 
 
-def main(url):
-    try:
-        clear_url = get_clear_url(url)
-        if is_bitlink(clear_url):
-            return count_clicks(clear_url)
-        else:
-            return shorten_link(url)
-    except requests.exceptions.HTTPError:
-        return "Неправильно введена ссылка"
-
-
-
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(
         description="Укорачивает ссылку или возвращает количество переходов по короткой ссылке"
     )
     parser.add_argument('url', help='Введите ссылку')
     args = parser.parse_args()
+    user_url = args.url
 
     load_dotenv()
 
@@ -77,4 +66,16 @@ if __name__ == "__main__":
         "Content-Type": "application/json"
     }
 
-    print(main(args.url))
+    try:
+        clear_url = get_clear_url(user_url)
+        if is_bitlink(clear_url, headers):
+            print(count_clicks(clear_url, headers))
+        else:
+            print(shorten_link(user_url, headers))
+    except requests.exceptions.HTTPError:
+        print("Неправильно введена ссылка")
+
+
+
+if __name__ == "__main__":
+    main()
