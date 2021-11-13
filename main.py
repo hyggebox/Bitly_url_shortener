@@ -68,12 +68,13 @@ def main():
     try:
         clear_url = get_clear_url(user_url)
         if is_bitlink(clear_url, headers):
-            return (count_clicks(clear_url, headers))
-        return (shorten_link(user_url, headers))
+            print(count_clicks(clear_url, headers))
+        else:
+            print(shorten_link(user_url, headers))
     except requests.exceptions.HTTPError:
-        return ("Неправильно введена ссылка")
+        print("Неправильно введена ссылка")
 
 
 
 if __name__ == "__main__":
-    print(main())
+    main()
